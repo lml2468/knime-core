@@ -62,7 +62,7 @@ import org.knime.core.data.filestore.internal.NotInWorkflowWriteFileStoreHandler
  * @noinstantiate This class is not intended to be instantiated by clients.
  * @noreference This class is not intended to be referenced by clients.
  */
-final class BufferedDataContainerFactory implements IDataContainerFactory {
+public final class BufferedDataContainerFactory implements IDataContainerFactory {
 
     public static final String HUMAN_READABLE_NAME = "Default (DataContainer)";
 
