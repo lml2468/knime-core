@@ -54,7 +54,7 @@ import org.knime.core.data.filestore.internal.IWriteFileStoreHandler;
 import org.knime.core.data.filestore.internal.NotInWorkflowWriteFileStoreHandler;
 
 /**
- * {@link RowContainerFactory} implementation to create {@link RowContainer}s used < 4.2 and beyond.
+ * {@link IDataContainerFactory} implementation to create {@link IDataContainer}s used < 4.2 and beyond.
  *
  * @author Christian Dietz, KNIME GmbH, Konstanz
  * @since 4.2
@@ -62,7 +62,7 @@ import org.knime.core.data.filestore.internal.NotInWorkflowWriteFileStoreHandler
  * @noinstantiate This class is not intended to be instantiated by clients.
  * @noreference This class is not intended to be referenced by clients.
  */
-public final class BufferedRowContainerFactory implements RowContainerFactory {
+final class BufferedDataContainerFactory implements IDataContainerFactory {
 
     public static final String HUMAN_READABLE_NAME = "Default (DataContainer)";
 
@@ -72,10 +72,10 @@ public final class BufferedRowContainerFactory implements RowContainerFactory {
     }
 
     @Override
-    public RowContainer create(final DataTableSpec spec, final DataContainerSettings settings,
+    public IDataContainer create(final DataTableSpec spec, final DataContainerSettings settings,
         final IDataRepository repository, final ILocalDataRepository localRepository,
         final IWriteFileStoreHandler fileStoreHandler) {
-        return new BufferedRowContainer(spec, settings, repository, localRepository,
+        return new BufferedDataContainer(spec, settings, repository, localRepository,
             initFileStoreHandler(fileStoreHandler, repository));
     }
 

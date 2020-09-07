@@ -44,55 +44,51 @@
  * ---------------------------------------------------------------------
  *
  * History
- *   Apr 30, 2020 (dietzc): created
+ *   May 9, 2020 (dietzc): created
  */
 package org.knime.core.data.container;
 
-import org.knime.core.data.DataRow;
 import org.knime.core.data.DataTableSpec;
+import org.knime.core.data.IDataRepository;
+import org.knime.core.data.filestore.internal.IWriteFileStoreHandler;
 
 /**
- * RowContainer store {@link DataRow}s and are able to provide a {@link ContainerTable} after RowContainer#close()' was
- * called.
+ * Factory to create {@link IDataContainer}s.
  *
- * NB: {@link RowContainer} abstracts from previous implementations of {@link DataContainer}.
+ * @author Christian Dietz, KNIME GmbH, Konstanz
  *
- * @author Christian Dietz, KNIME GmbH
- * @since 4.2
+ * @noimplement This interface is not intended to be implemented by clients.
+ *
+ * @since 4.3
  */
-public interface RowContainer extends RowAppender, AutoCloseable {
-
-    @Override
-    void close();
+public interface IDataContainerFactory {
 
     /**
-     * Can only be called after RowContainer#close() has been called.
+     * Make sure to call this method before
+     * {@link #create(DataTableSpec, DataContainerSettings, IDataRepository, ILocalDataRepository, IWriteFileStoreHandler)}.
      *
-     * @return the underlying {@link ContainerTable}.
+     * @param spec the {@link DataTableSpec}, which is checked for compatibility with the {@link IDataContainerFactory}.
+     * @return <source>true</source> if {@link IDataContainerFactory} can create a {@link IDataContainer} for the provided
+     *         spec.
      */
-    ContainerTable getTable();
+    boolean supports(DataTableSpec spec);
 
     /**
-     * Clears the RowContainer, i.e. all associated temporary data and memory will be removed.
-     */
-    void clear();
-
-    /**
-     * @return size of the RowContainer. Can increase until RowContainer is closed.
-     */
-    long size();
-
-    /**
-     * @return the underlying {@link DataTableSpec}. On close, the {@link DataTableSpec} will comprise domain
-     *         information for each column.
-     */
-    DataTableSpec getTableSpec();
-
-    /**
-     * Set the maximum number of possible values for a nominal domain
+     * Creates a new {@link IDataContainer}. Call {@link #supports(DataTableSpec)} before creating a {@link IDataContainer}
+     * to ensure compatibility of the {@link DataTableSpec} with the created {@link IDataContainer}.
      *
-     * @param maxPossibleValues the maximum number of parameters for a nominal domain.
+     * @param spec used to create {@link IDataContainer}.
+     * @param settings of the {@link IDataContainer}
+     * @param repository the global data repository (per workflow)
+     * @param localRepository the local data repository (per node)
+     * @param fileStoreHandler the file store handler
+     *
+     * @return the created {@link IDataContainer}
      */
-    @Deprecated
-    void setMaxPossibleValues(int maxPossibleValues);
+    IDataContainer create(final DataTableSpec spec, final DataContainerSettings settings,
+        final IDataRepository repository, final ILocalDataRepository localRepository,
+        final IWriteFileStoreHandler fileStoreHandler);
+
+    /** @return non-blank short name shown in the preference page, e.g. "Arrow". */
+    public String getName();
 }

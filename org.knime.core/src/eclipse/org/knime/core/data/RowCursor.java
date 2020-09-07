@@ -55,38 +55,38 @@ import org.knime.core.node.BufferedDataTable;
  * A DataRowCursor allows for (potentially) faster access to a {@link BufferedDataTable} than a {@link RowIterator}.
  *
  * @author Christian Dietz, KNIME GmbH
- * @since 4.3
+ * @since 4.2.2
  *
  * @apiNote API still experimental. It might change in future releases of KNIME Analytics Platform.
  * @noreference This interface is not intended to be referenced by clients.
  */
-public interface DataRowCursor extends AutoCloseable {
+public interface RowCursor extends AutoCloseable {
 
     /**
      * Check if there are more rows available.
      *
-     * @return <source>true</source> if it is save to call {@link #forward()}, false otherwise
+     * @return <source>true</source> if it is save to call {@link #poll()}, false otherwise
      */
-    boolean canForward();
+    boolean canPoll();
 
     /**
-     * Forwards cursor to next position. Cursor has to be forwarded once before accessing the {@link DataValue
+     * Polls a row. Cursor has to be polled before accessing the {@link DataValue
      * DataValues}.
      *
-     * @return <source>true</source> if cursor was forwarded successfully to the next row, false otherwise
+     * @return <source>true</source> if another row can be polled.
      */
-    boolean forward();
+    boolean poll();
 
     /**
-     * @return number of values.
+     * @return number of columns.
      */
-    int getNumValues();
+    int getNumColumns();
 
     /**
      * Get a {@link DataValue} at a given position.
      *
      * NB: It's not guaranteed that {@link #getValue(int)} will always return a new {@link DataValue} instance, i.e. the
-     * values accessed through the {@link DataValue} instance can change after {@link #forward()} has been called.
+     * values accessed through the {@link DataValue} instance can change after {@link #poll()} has been called.
      *
      * @param <D> type of the {@link DataValue}
      * @param index the column index

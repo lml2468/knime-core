@@ -711,7 +711,7 @@
    <extension
          point="org.knime.core.RowContainer">
       <RowContainer
-            factoryClass="org.knime.core.data.container.BufferedRowContainerFactory">
+            factoryClass="org.knime.core.data.container.BufferedDataContainerFactory">
       </RowContainer>
    </extension>
 </plugin>

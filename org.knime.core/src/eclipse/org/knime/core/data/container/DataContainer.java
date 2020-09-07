@@ -126,7 +126,7 @@ public class DataContainer implements RowAppender {
         MAX_POSSIBLE_VALUES = defaults.getMaxDomainValues();
     }
 
-    private RowContainer m_rowContainer;
+    private IDataContainer m_rowContainer;
 
     private DataTableSpec m_spec;
 
@@ -210,7 +210,7 @@ public class DataContainer implements RowAppender {
      * @param fileStoreHandler a filestore handler
      * @param forceCopyOfBlobs true, if blobs should be copied
      * @param rowKeys if <code>true</code>, {@link RowKey}s are expected to be part of a {@link DataRow}.
-     * @param enableDataContainerV2 if <code>true</code> extension point for {@link RowContainerFactory}s can be used.
+     * @param enableDataContainerV2 if <code>true</code> extension point for {@link IDataContainerFactory}s can be used.
      * @throws IllegalArgumentException If <code>maxCellsInMemory</code> &lt; 0 or the spec is null
      * @since 4.2
      */
@@ -262,7 +262,7 @@ public class DataContainer implements RowAppender {
         m_localRepository.addCancellationListener(m_cancellationListener);
         m_spec = spec;
 
-        final RowContainerFactory selected;
+        final IDataContainerFactory selected;
         if (enableDataContainerV2) {
             // try to use row container factory selected in preference page, if not compatible to spec, fallback to default.
             selected = RowContainerFactoryRegistry.getInstance().getRowContainerFactoryFor(spec);
@@ -387,7 +387,7 @@ public class DataContainer implements RowAppender {
     }
 
     /* Used in tests */
-    RowContainer getRowContainer() {
+    IDataContainer getRowContainer() {
         return m_rowContainer;
     }
 
@@ -495,7 +495,7 @@ public class DataContainer implements RowAppender {
     public static void writeToStream(final DataTable table, final OutputStream out, final ExecutionMonitor exec)
         throws IOException, CanceledExecutionException {
         // TODO switch according to table implementation.
-        BufferedRowContainer.writeToStream(table, out, exec);
+        BufferedDataContainer.writeToStream(table, out, exec);
     }
 
     /**
@@ -527,7 +527,7 @@ public class DataContainer implements RowAppender {
      */
     public static ContainerTable readFromStream(final InputStream in) throws IOException {
         // TODO how do we know which deserializer to use?
-        return BufferedRowContainer.readFromStream(in);
+        return BufferedDataContainer.readFromStream(in);
     }
 
     /**
@@ -543,7 +543,7 @@ public class DataContainer implements RowAppender {
     // RearrangeColumnsTable when it reads a table that has been written
     // with KNIME 1.1.x or before.
     static ContainerTable readFromZip(final ReferencedFile zipFileRef, final boolean rowKeys) throws IOException {
-        return BufferedRowContainer.readFromZip(zipFileRef, rowKeys);
+        return BufferedDataContainer.readFromZip(zipFileRef, rowKeys);
     }
 
     /**
@@ -558,7 +558,7 @@ public class DataContainer implements RowAppender {
      */
     protected static ContainerTable readFromZipDelayed(final ReferencedFile zipFile, final DataTableSpec spec,
         final int bufferID, final WorkflowDataRepository dataRepository) {
-        return BufferedRowContainer.readFromZipDelayed(zipFile, spec, bufferID, dataRepository);
+        return BufferedDataContainer.readFromZipDelayed(zipFile, spec, bufferID, dataRepository);
     }
 
     /**
@@ -569,7 +569,7 @@ public class DataContainer implements RowAppender {
      * @return Table contained in <code>zipFile</code>.
      */
     static ContainerTable readFromZipDelayed(final CopyOnAccessTask c, final DataTableSpec spec) {
-        return BufferedRowContainer.readFromZipDelayed(c, spec);
+        return BufferedDataContainer.readFromZipDelayed(c, spec);
     }
 
     /** the temp file will have a time stamp in its name. */

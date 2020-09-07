@@ -196,7 +196,7 @@ public class DataContainerTest extends TestCase {
             cont.addRowToTable(it.next());
         }
         @SuppressWarnings("resource")
-        Buffer buffer = ((BufferedRowContainer)cont.getRowContainer()).getBuffer();
+        Buffer buffer = ((BufferedDataContainer)cont.getRowContainer()).getBuffer();
         buffer.flushBuffer();
         for (; i < nrRows; i++) {
             cont.addRowToTable(it.next());

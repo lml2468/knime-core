@@ -100,38 +100,38 @@ public final class RowContainerFactoryRegistry {
         IExtensionRegistry registry = Platform.getExtensionRegistry();
         IExtensionPoint point = registry.getExtensionPoint(EXT_POINT_ID);
 
-        List<RowContainerFactory> factoryList = Stream.of(point.getExtensions())
+        List<IDataContainerFactory> factoryList = Stream.of(point.getExtensions())
             .flatMap(ext -> Stream.of(ext.getConfigurationElements())).map(cfe -> readFactory(cfe))
             .filter(f -> f != null).sorted(Comparator.comparing(f -> f.getClass().getSimpleName(), (a, b) -> {
                 // sort formats so that the "KNIME standard" format comes first.
                 if (Objects.equals(a, b)) {
                     return 0;
-                } else if (BufferedRowContainerFactory.class.getName().equals(a)) {
+                } else if (BufferedDataContainerFactory.class.getName().equals(a)) {
                     return -1;
-                } else if (BufferedRowContainerFactory.class.getName().equals(b)) {
+                } else if (BufferedDataContainerFactory.class.getName().equals(b)) {
                     return +1;
                 } else {
                     return a.compareTo(b);
                 }
             })).collect(Collectors.toList());
 
-        boolean hasFallback = factoryList.stream().anyMatch(f -> f.getClass().equals(BufferedRowContainerFactory.class));
+        boolean hasFallback = factoryList.stream().anyMatch(f -> f.getClass().equals(BufferedDataContainerFactory.class));
         CheckUtils.checkState(hasFallback, "No fallback row container factory registered, expected '%s' but not present in '%s'",
-            RowContainerFactory.class.getName(),
+            IDataContainerFactory.class.getName(),
             StringUtils.join(factoryList.stream().map(f -> f.getClass().getName()).iterator(), ", "));
 
         return new RowContainerFactoryRegistry(factoryList);
     }
 
-    private static RowContainerFactory readFactory(final IConfigurationElement cfe) {
+    private static IDataContainerFactory readFactory(final IConfigurationElement cfe) {
         try {
-            RowContainerFactory f = (RowContainerFactory)cfe.createExecutableExtension("factoryClass");
+            IDataContainerFactory f = (IDataContainerFactory)cfe.createExecutableExtension("factoryClass");
             LOGGER.debugWithFormat("Added row container factory '%s' from '%s'", f.getClass().getName(),
                 cfe.getContributor().getName());
             return f;
         } catch (CoreException ex) {
             LOGGER.error(String.format("Could not create '%s' from extension '%s': %s",
-                RowContainerFactory.class.getName(), cfe.getContributor().getName(), ex.getMessage()), ex);
+                IDataContainerFactory.class.getName(), cfe.getContributor().getName(), ex.getMessage()), ex);
         }
         return null;
     }
@@ -141,9 +141,9 @@ public final class RowContainerFactoryRegistry {
         return INSTANCE;
     }
 
-    private final List<RowContainerFactory> m_rowContainerFactories;
+    private final List<IDataContainerFactory> m_rowContainerFactories;
 
-    private RowContainerFactoryRegistry(final List<RowContainerFactory> rowContainerFactories) {
+    private RowContainerFactoryRegistry(final List<IDataContainerFactory> rowContainerFactories) {
         m_rowContainerFactories = Collections.unmodifiableList(rowContainerFactories);
     }
 
@@ -154,17 +154,17 @@ public final class RowContainerFactoryRegistry {
      * @return non-null 'default' format.
      * @see #getInstanceRowContainerFactory()
      */
-    public RowContainerFactory getDefaultRowContainerFactory() {
+    public IDataContainerFactory getDefaultRowContainerFactory() {
         String defaultFactoryClassName;
         if (KNIMEConstants.isNightlyBuild()) {
-            defaultFactoryClassName = BufferedRowContainerFactory.class.getName();
+            defaultFactoryClassName = BufferedDataContainerFactory.class.getName();
             // TODO make this the nightly build default once we're there
             // defaultFactoryClassName = "XYZ Arrow";
         } else {
-            defaultFactoryClassName = BufferedRowContainerFactory.class.getName();
+            defaultFactoryClassName = BufferedDataContainerFactory.class.getName();
         }
         String defaultID = CORE_DEFAULT_PREFS.get(PREF_KEY_ROWCONTAINER_FACTORY, defaultFactoryClassName);
-        Optional<RowContainerFactory> defaultFactory =
+        Optional<IDataContainerFactory> defaultFactory =
             m_rowContainerFactories.stream().filter(f -> f.getClass().getName().equals(defaultID)).findFirst();
         if (!defaultFactory.isPresent()) {
             LOGGER.warnWithFormat("Invalid row container factory '%s' -- using standard KNIME data container instead.", defaultID);
@@ -176,13 +176,13 @@ public final class RowContainerFactoryRegistry {
      * @return the row container factory as defined by the KNIME preferences or the default instead. This is is what is actually used
      *         by the core.
      */
-    public RowContainerFactory getInstanceRowContainerFactory() {
+    public IDataContainerFactory getInstanceRowContainerFactory() {
         String result = CORE_PREFS.get(PREF_KEY_ROWCONTAINER_FACTORY, null); // instance scope prefs
         if (result == null) {
             return getDefaultRowContainerFactory();
         }
         final String resultFinal = result;
-        Optional<RowContainerFactory> match =
+        Optional<IDataContainerFactory> match =
             m_rowContainerFactories.stream().filter(f -> f.getClass().getName().equals(resultFinal)).findFirst();
         if (!match.isPresent()) {
             LOGGER.warnWithFormat("Invalid row container factory '%s' -- using standard KNIME data container instead.", result);
@@ -192,7 +192,7 @@ public final class RowContainerFactoryRegistry {
     }
 
     /** @return the row container factories in an unmodifiable list. */
-    public List<RowContainerFactory> getRowContainerFactories() {
+    public List<IDataContainerFactory> getRowContainerFactories() {
         return m_rowContainerFactories;
     }
 
@@ -200,8 +200,8 @@ public final class RowContainerFactoryRegistry {
      * @param spec the spec of the table to write.
      * @return the row container factories accepting to write that schema, if possible {@link #getInstanceRowContainerFactory()}.
      */
-    public RowContainerFactory getRowContainerFactoryFor(final DataTableSpec spec) {
-        RowContainerFactory instanceRowContainerFactory = getInstanceRowContainerFactory();
+    public IDataContainerFactory getRowContainerFactoryFor(final DataTableSpec spec) {
+        IDataContainerFactory instanceRowContainerFactory = getInstanceRowContainerFactory();
         if (instanceRowContainerFactory.supports(spec)) {
             return instanceRowContainerFactory;
         }
@@ -214,7 +214,7 @@ public final class RowContainerFactoryRegistry {
      * @return the row container factory with the given class name - used to restore a previously saved table.
      * @throws IllegalArgumentException If the factory is unknown (usually means: not installed)
      */
-    public RowContainerFactory getRowContainerFactory(final String fullyQualifiedClassName)
+    public IDataContainerFactory getRowContainerFactory(final String fullyQualifiedClassName)
         throws IllegalArgumentException {
         return m_rowContainerFactories.stream()//
             .filter(f -> f.getClass().getName().equals(fullyQualifiedClassName))//
