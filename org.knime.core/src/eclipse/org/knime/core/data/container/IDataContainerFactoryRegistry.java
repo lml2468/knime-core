@@ -79,24 +79,24 @@ import org.osgi.framework.FrameworkUtil;
  * @noextend This class is not intended to be subclassed by clients.
  * @noreference This class is not intended to be referenced by clients.
  */
-public final class RowContainerFactoryRegistry {
+public final class IDataContainerFactoryRegistry {
 
-    private static final NodeLogger LOGGER = NodeLogger.getLogger(RowContainerFactoryRegistry.class);
+    private static final NodeLogger LOGGER = NodeLogger.getLogger(IDataContainerFactoryRegistry.class);
 
     private static final String EXT_POINT_ID = "org.knime.core.RowContainer";
 
     private static final IEclipsePreferences CORE_PREFS =
-        InstanceScope.INSTANCE.getNode(FrameworkUtil.getBundle(RowContainerFactoryRegistry.class).getSymbolicName());
+        InstanceScope.INSTANCE.getNode(FrameworkUtil.getBundle(IDataContainerFactoryRegistry.class).getSymbolicName());
 
     private static final IEclipsePreferences CORE_DEFAULT_PREFS =
-        DefaultScope.INSTANCE.getNode(FrameworkUtil.getBundle(RowContainerFactoryRegistry.class).getSymbolicName());
+        DefaultScope.INSTANCE.getNode(FrameworkUtil.getBundle(IDataContainerFactoryRegistry.class).getSymbolicName());
 
     /** Preference constant for selecting row container factory. */
     public static final String PREF_KEY_ROWCONTAINER_FACTORY = "knime.core.row-container-factory";
 
-    private static RowContainerFactoryRegistry INSTANCE = createInstance();
+    private static IDataContainerFactoryRegistry INSTANCE = createInstance();
 
-    private static RowContainerFactoryRegistry createInstance() {
+    private static IDataContainerFactoryRegistry createInstance() {
         IExtensionRegistry registry = Platform.getExtensionRegistry();
         IExtensionPoint point = registry.getExtensionPoint(EXT_POINT_ID);
 
@@ -120,7 +120,7 @@ public final class RowContainerFactoryRegistry {
             IDataContainerFactory.class.getName(),
             StringUtils.join(factoryList.stream().map(f -> f.getClass().getName()).iterator(), ", "));
 
-        return new RowContainerFactoryRegistry(factoryList);
+        return new IDataContainerFactoryRegistry(factoryList);
     }
 
     private static IDataContainerFactory readFactory(final IConfigurationElement cfe) {
@@ -137,13 +137,13 @@ public final class RowContainerFactoryRegistry {
     }
 
     /** @return the instance to use. */
-    public static RowContainerFactoryRegistry getInstance() {
+    public static IDataContainerFactoryRegistry getInstance() {
         return INSTANCE;
     }
 
     private final List<IDataContainerFactory> m_rowContainerFactories;
 
-    private RowContainerFactoryRegistry(final List<IDataContainerFactory> rowContainerFactories) {
+    private IDataContainerFactoryRegistry(final List<IDataContainerFactory> rowContainerFactories) {
         m_rowContainerFactories = Collections.unmodifiableList(rowContainerFactories);
     }
 

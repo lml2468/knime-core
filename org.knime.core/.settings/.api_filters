@@ -46,6 +46,14 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="META-INF/MANIFEST.MF" type="org.knime.core.data.container.RowContainerFactoryRegistry">
+        <filter id="305324134">
+            <message_arguments>
+                <message_argument value="org.knime.core.data.container.RowContainerFactoryRegistry"/>
+                <message_argument value="org.knime.core_4.3.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="META-INF/MANIFEST.MF" type="org.knime.core.eclipseUtil.GlobalClassCreator">
         <filter comment="buddy class loading deactivated" id="305324134">
             <message_arguments>
@@ -2069,32 +2077,6 @@
             <message_arguments>
                 <message_argument value="KnowsRowCountTable"/>
                 <message_argument value="RearrangeColumnsTable"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/eclipse/org/knime/core/data/container/RowContainerFactoryRegistry.java" type="org.knime.core.data.container.RowContainerFactoryRegistry">
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="org.knime.core.data.container.RowContainerFactoryRegistry"/>
-                <message_argument value="getDefaultRowContainerFactory()"/>
-            </message_arguments>
-        </filter>
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="org.knime.core.data.container.RowContainerFactoryRegistry"/>
-                <message_argument value="getInstanceRowContainerFactory()"/>
-            </message_arguments>
-        </filter>
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="org.knime.core.data.container.RowContainerFactoryRegistry"/>
-                <message_argument value="getRowContainerFactory(String)"/>
-            </message_arguments>
-        </filter>
-        <filter id="338792546">
-            <message_arguments>
-                <message_argument value="org.knime.core.data.container.RowContainerFactoryRegistry"/>
-                <message_argument value="getRowContainerFactoryFor(DataTableSpec)"/>
             </message_arguments>
         </filter>
     </resource>
