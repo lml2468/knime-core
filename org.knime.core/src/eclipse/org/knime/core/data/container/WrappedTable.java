@@ -51,7 +51,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import org.knime.core.data.RowCursor;
+import org.knime.core.data.RowReadCursor;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.container.filter.TableFilter;
 import org.knime.core.node.BufferedDataTable;
@@ -121,12 +121,12 @@ public final class WrappedTable implements KnowsRowCountTable {
     }
 
     @Override
-    public RowCursor cursor() {
+    public RowReadCursor cursor() {
         return m_table.cursor();
     }
 
     @Override
-    public RowCursor cursor(final TableFilter filter) {
+    public RowReadCursor cursor(final TableFilter filter) {
         return m_table.cursor(filter);
     }
 

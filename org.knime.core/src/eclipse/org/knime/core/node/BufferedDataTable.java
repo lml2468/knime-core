@@ -70,7 +70,7 @@ import javax.swing.SwingUtilities;
 import org.apache.commons.io.FileUtils;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataRow;
-import org.knime.core.data.RowCursor;
+import org.knime.core.data.RowReadCursor;
 import org.knime.core.data.DataTable;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.DataType;
@@ -353,28 +353,28 @@ public final class BufferedDataTable implements DataTable, PortObject {
     }
 
     /**
-     * Provides a {@link RowCursor} to access rows of this table.
+     * Provides a {@link RowReadCursor} to access rows of this table.
      *
-     * @return {@link RowCursor} to access rows of a table.
+     * @return {@link RowReadCursor} to access rows of a table.
      * @apiNote Must not to be called by clients. Experimental API.
      * @since 4.3
      */
-    public RowCursor cursor(){
+    public RowReadCursor cursor(){
         return m_delegate.cursor();
     }
 
     /**
-     * Provides a {@link RowCursor} to access rows of this table that is filtered according to a given
+     * Provides a {@link RowReadCursor} to access rows of this table that is filtered according to a given
      * {@link TableFilter} and can be iterated over. The filtering won't change this BufferedDataTable or impact
      * subsequent calls of this method with other filters.
      *
      * @param filter to filter rows and columns.
      *
-     * @return {@link RowCursor} to access rows of a table.
+     * @return {@link RowReadCursor} to access rows of a table.
      * @apiNote Must not to be called by clients. Experimental API.
      * @since 4.3
      */
-    public RowCursor cursor(final TableFilter filter) {
+    public RowReadCursor cursor(final TableFilter filter) {
         return m_delegate.cursor(filter);
     }
 
@@ -1038,20 +1038,20 @@ public final class BufferedDataTable implements DataTable, PortObject {
         public CloseableRowIterator iterator();
 
         /**
-         * @return {@link RowCursor} to access rows of a table.
+         * @return {@link RowReadCursor} to access rows of a table.
          * @apiNote Must not to be called by clients. Experimental API.
          * @since 4.3
          */
-        RowCursor cursor();
+        RowReadCursor cursor();
 
         /**
          * @param filter to filter rows and columns.
          *
-         * @return {@link RowCursor} to access rows of a table.
+         * @return {@link RowReadCursor} to access rows of a table.
          * @apiNote Must not to be called by clients. Experimental API.
          * @since 4.3
          */
-        RowCursor cursor(final TableFilter filter);
+        RowReadCursor cursor(final TableFilter filter);
 
         /**
          * Provides a {@link CloseableRowIterator} that is filtered according to a given {@link TableFilter}. The

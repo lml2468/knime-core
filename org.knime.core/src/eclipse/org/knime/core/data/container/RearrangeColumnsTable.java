@@ -68,7 +68,7 @@ import org.knime.core.data.DataCell;
 import org.knime.core.data.DataCellTypeConverter;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataRow;
-import org.knime.core.data.RowCursor;
+import org.knime.core.data.RowReadCursor;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.RowKey;
 import org.knime.core.data.container.ColumnRearranger.SpecAndFactoryObject;
@@ -282,14 +282,14 @@ public final class RearrangeColumnsTable implements KnowsRowCountTable {
 
     @SuppressWarnings("resource")
     @Override
-    public RowCursor cursor() {
+    public RowReadCursor cursor() {
         // TODO efficient implementation for rearranged column tables, not based on #iterator();
         return new FallbackRowCursor(iterator(), getDataTableSpec());
     }
 
     @SuppressWarnings("resource")
     @Override
-    public RowCursor cursor(final TableFilter filter) {
+    public RowReadCursor cursor(final TableFilter filter) {
         // TODO efficient implementation for rearranged column tables, not based on #iterator();
         return new FallbackRowCursor(iteratorWithFilter(filter), getDataTableSpec());
     }

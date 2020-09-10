@@ -56,7 +56,7 @@ import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
 import org.knime.core.data.DataRow;
-import org.knime.core.data.RowCursor;
+import org.knime.core.data.RowReadCursor;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.RowKey;
 import org.knime.core.data.def.DefaultRow;
@@ -120,7 +120,7 @@ public class FallbackIteratorTest {
     @Test
     public void testIdentity() throws Exception {
         final BufferedDataTable fullTable = createTable(0, 16, 16, 0, 16);
-        try (RowCursor cursor = fullTable.cursor(); CloseableRowIterator it = fullTable.iterator()) {
+        try (RowReadCursor cursor = fullTable.cursor(); CloseableRowIterator it = fullTable.iterator()) {
             assertEquals(cursor.getNumColumns(), fullTable.getDataTableSpec().getNumColumns());
             while (cursor.poll()) {
                 assertTrue(it.hasNext());

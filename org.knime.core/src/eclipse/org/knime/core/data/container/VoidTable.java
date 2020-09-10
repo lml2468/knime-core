@@ -51,7 +51,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.knime.core.data.DataRow;
-import org.knime.core.data.RowCursor;
+import org.knime.core.data.RowReadCursor;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.container.filter.TableFilter;
 import org.knime.core.node.BufferedDataTable;
@@ -98,13 +98,13 @@ public final class VoidTable implements KnowsRowCountTable {
 
     @SuppressWarnings("resource")
     @Override
-    public RowCursor cursor() {
+    public RowReadCursor cursor() {
         return new FallbackRowCursor(iterator(), getDataTableSpec());
     }
 
     @SuppressWarnings("resource")
     @Override
-    public RowCursor cursor(final TableFilter filter) {
+    public RowReadCursor cursor(final TableFilter filter) {
         return new FallbackRowCursor(iteratorWithFilter(filter), getDataTableSpec());
     }
 

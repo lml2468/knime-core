@@ -55,7 +55,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.knime.core.data.RowCursor;
+import org.knime.core.data.RowReadCursor;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.container.filter.TableFilter;
 import org.knime.core.node.BufferedDataTable;
@@ -210,12 +210,12 @@ public final class TableSpecReplacerTable implements KnowsRowCountTable {
     }
 
     @Override
-    public RowCursor cursor() {
+    public RowReadCursor cursor() {
         return m_reference.cursor();
     }
 
     @Override
-    public RowCursor cursor(final TableFilter filter) {
+    public RowReadCursor cursor(final TableFilter filter) {
         return m_reference.cursor(filter);
     }
 

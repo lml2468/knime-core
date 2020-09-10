@@ -53,7 +53,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import org.knime.core.data.RowCursor;
+import org.knime.core.data.RowReadCursor;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.RowKey;
 import org.knime.core.data.container.filter.TableFilter;
@@ -204,14 +204,14 @@ public final class JoinedTable implements KnowsRowCountTable {
 
     @SuppressWarnings("resource")
     @Override
-    public RowCursor cursor() {
+    public RowReadCursor cursor() {
         // TODO efficient implementation for joined tables, not based on #iterator();
         return new FallbackRowCursor(iterator(), getDataTableSpec());
     }
 
     @SuppressWarnings("resource")
     @Override
-    public RowCursor cursor(final TableFilter filter) {
+    public RowReadCursor cursor(final TableFilter filter) {
         // TODO efficient implementation for joined tables, not based on #iterator();
         return new FallbackRowCursor(iteratorWithFilter(filter), getDataTableSpec());
     }

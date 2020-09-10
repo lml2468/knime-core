@@ -51,7 +51,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.knime.core.data.DataRow;
-import org.knime.core.data.RowCursor;
+import org.knime.core.data.RowReadCursor;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.RowKey;
 import org.knime.core.data.append.AppendedRowsTable;
@@ -187,14 +187,14 @@ public final class ConcatenateTable implements KnowsRowCountTable {
 
     @SuppressWarnings("resource")
     @Override
-    public RowCursor cursor() {
+    public RowReadCursor cursor() {
         // TODO More efficient implementation: with slow performance in case of fast tables (cells are created in case of `iterator()` :-()
         return new FallbackRowCursor(iterator(), getDataTableSpec());
     }
 
     @SuppressWarnings("resource")
     @Override
-    public RowCursor cursor(final TableFilter filter) {
+    public RowReadCursor cursor(final TableFilter filter) {
         // TODO More efficient implementation: with slow performance in case of fast tables (cells are created in case of `iterator()` :-()
         return new FallbackRowCursor(iteratorWithFilter(filter), getDataTableSpec());
     }

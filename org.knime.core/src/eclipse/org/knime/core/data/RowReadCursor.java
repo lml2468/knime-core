@@ -45,9 +45,7 @@
  */
 package org.knime.core.data;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
+import org.knime.core.data.container.RowReadInput;
 import org.knime.core.node.BufferedDataTable;
 
 
@@ -60,7 +58,7 @@ import org.knime.core.node.BufferedDataTable;
  * @apiNote API still experimental. It might change in future releases of KNIME Analytics Platform.
  * @noreference This interface is not intended to be referenced by clients.
  */
-public interface RowCursor extends AutoCloseable {
+public interface RowReadCursor extends AutoCloseable, RowReadInput {
 
     /**
      * Check if there are more rows available.
@@ -76,60 +74,6 @@ public interface RowCursor extends AutoCloseable {
      * @return <source>true</source> if another row can be polled.
      */
     boolean poll();
-
-    /**
-     * @return number of columns.
-     */
-    int getNumColumns();
-
-    /**
-     * Get a {@link DataValue} at a given position.
-     *
-     * NB: It's not guaranteed that {@link #getValue(int)} will always return a new {@link DataValue} instance, i.e. the
-     * values accessed through the {@link DataValue} instance can change after {@link #poll()} has been called.
-     *
-     * @param <D> type of the {@link DataValue}
-     * @param index the column index
-     *
-     * @return the {@link DataValue} at column index or <source>null</source> if {@link DataValue} is not available, for
-     *         example if the column has been filtered out. In case {@link #isMissing(int)} returns
-     *         <source>true</source> the returned instance is a {@link MissingValue}.
-     *
-     * @throws NoSuchElementException if the cursor is at an invalid position
-     */
-    <D extends DataValue> D getValue(int index);
-
-    /**
-     * If <code>true</<code> getValue will return `MissingValue` to get missing value cause.
-     *
-     * @param index column index
-     * @return <code>true</code> if value at index is missing
-     *
-     * @throws NoSuchElementException if the cursor is at an invalid position
-     */
-    boolean isMissing(int index);
-
-    /**
-     * Returns the error message that explains why the cell is missing, or an empty optional if no such message has been
-     * set. This method is not to be called for non-missing values.
-     *
-     * @param index column index
-     * @return the error associated with a missing value at the given column index, if present
-     *
-     * @throws IllegalStateException if {@link #isMissing(int)} at the given column index does not return
-     *             <code>true</code>
-     * @throws NoSuchElementException if the cursor is at an invalid position
-     *
-     * @see MissingValue#getError()
-     */
-    Optional<String> getMissingValueError(final int index);
-
-    /**
-     * @return the {@link RowKeyValue}
-     *
-     * @throws NoSuchElementException if the cursor is at an invalid position
-     */
-    RowKeyValue getRowKeyValue();
 
     /**
      * Closes this resource, relinquishing any underlying resources. This method is invoked automatically on objects
