@@ -70,4 +70,8 @@ public interface RowWriteOutput {
      * @return number of columns
      */
     int getNumColumns();
+
+    void setMissing(int index);
+
+    void setMissing(int index, String cause);
 }
