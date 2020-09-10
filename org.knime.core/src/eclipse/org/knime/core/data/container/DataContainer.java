@@ -265,7 +265,7 @@ public class DataContainer implements RowAppender {
         final IDataContainerFactory selected;
         if (enableDataContainerV2) {
             // try to use row container factory selected in preference page, if not compatible to spec, fallback to default.
-            selected = IDataContainerFactoryRegistry.getInstance().getInstanceRowContainerFactory();
+            selected = IDataContainerFactoryRegistry.getInstance().getRowContainerFactoryFor(spec);
         } else {
             // force default implementation (i.e. < 4.2)
             selected = IDataContainerFactoryRegistry.getInstance().getDefaultRowContainerFactory();
