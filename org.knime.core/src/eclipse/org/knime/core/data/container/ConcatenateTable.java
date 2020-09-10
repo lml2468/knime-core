@@ -51,9 +51,9 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.knime.core.data.DataRow;
-import org.knime.core.data.RowReadCursor;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.RowKey;
+import org.knime.core.data.RowReadCursor;
 import org.knime.core.data.append.AppendedRowsTable;
 import org.knime.core.data.append.AppendedRowsTable.DuplicatePolicy;
 import org.knime.core.data.container.filter.FilterDelegateRowIterator;

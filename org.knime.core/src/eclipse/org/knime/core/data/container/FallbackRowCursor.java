@@ -51,12 +51,12 @@ import java.util.Optional;
 
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataRow;
-import org.knime.core.data.RowReadCursor;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.DataValue;
 import org.knime.core.data.MissingValue;
 import org.knime.core.data.RowKey;
 import org.knime.core.data.RowKeyValue;
+import org.knime.core.data.RowReadCursor;
 
 /**
  * Fallback implementation of {@link RowReadCursor} based on {@link CloseableRowIterator}.

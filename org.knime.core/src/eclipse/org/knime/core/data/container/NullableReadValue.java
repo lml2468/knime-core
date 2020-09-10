@@ -45,10 +45,9 @@
  */
 package org.knime.core.data.container;
 
-import org.knime.core.data2.ReadValue;
-
 /**
  * Base interface for value through which data values are read.
+ * @since 4.2.2
  */
 public interface NullableReadValue extends ReadValue {
 

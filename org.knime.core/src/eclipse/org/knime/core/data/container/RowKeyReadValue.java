@@ -46,7 +46,6 @@
 package org.knime.core.data.container;
 
 import org.knime.core.data.RowKeyValue;
-import org.knime.core.data2.ReadValue;
 
 /**
  * TODO

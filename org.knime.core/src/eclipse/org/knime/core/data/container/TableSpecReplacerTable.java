@@ -55,8 +55,8 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.knime.core.data.RowReadCursor;
 import org.knime.core.data.DataTableSpec;
+import org.knime.core.data.RowReadCursor;
 import org.knime.core.data.container.filter.TableFilter;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.BufferedDataTable.KnowsRowCountTable;
