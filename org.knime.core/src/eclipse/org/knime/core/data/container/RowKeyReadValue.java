@@ -51,10 +51,9 @@ import org.knime.core.data.RowKeyValue;
  * TODO
  *
  * @author dietzc
+ * @since 4.2.2
  */
-public interface RowKeyReadValue extends ReadValue {
-	/**
-	 * @return TODO
-	 */
-	RowKeyValue getRowKeyValue();
+public interface RowKeyReadValue extends ReadValue, RowKeyValue {
+    @Override
+    String getString();
 }
