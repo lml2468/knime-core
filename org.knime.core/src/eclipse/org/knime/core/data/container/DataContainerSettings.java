@@ -368,7 +368,7 @@ public final class DataContainerSettings {
      *
      * @return the initialize domain flag
      */
-    boolean getInitializeDomain() {
+    public boolean getInitializeDomain() {
         return m_initDomain;
     }
 
